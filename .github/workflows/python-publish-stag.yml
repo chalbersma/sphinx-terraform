@@ -20,7 +20,7 @@ permissions:
 jobs:
   deploy:
 
-    runs-on: ubuntu-latest
+    runs-on: small-runner-scale-set-group
 
     steps:
     - uses: actions/checkout@v4
