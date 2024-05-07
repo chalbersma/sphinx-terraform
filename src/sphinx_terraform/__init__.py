@@ -43,7 +43,7 @@ class SphinxTerraformError(SphinxError):
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:
-    app.require_sphinx("3")
+    app.require_sphinx("3.0")
 
     app.add_config_value("terraform_sources", app.srcdir, "env", [str, dict])
     app.add_config_value("terraform_comment_markup", "", "env", [str])

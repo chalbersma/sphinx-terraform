@@ -32,7 +32,7 @@ requirements_in = this_directory.joinpath("requirements.in")
 if __name__ == "__main__":
     setup(
         name="sphinx-terraform-ch",
-        version="2024.5.7-0",
+        version="2024.5.7-1",
         description="A fork of a Sphinx extension for documenting Terraform modules.",
         long_description=(this_directory / "README.rst").read_text(),
         long_description_content_type="text/x-rst",

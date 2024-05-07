@@ -30,7 +30,7 @@ log = getLogger(__name__)
 
 
 def setup(app: Sphinx) -> ExtensionMetadata:
-    app.require_sphinx("3")
+    app.require_sphinx("3.0")
 
     app.connect("env-purge-doc", env_purge_doc)
     app.connect("doctree-read", doctree_read)
