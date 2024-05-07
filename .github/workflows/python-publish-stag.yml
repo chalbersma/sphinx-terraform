@@ -20,7 +20,7 @@ permissions:
 jobs:
   deploy:
 
-    runs-on: small-runnerset-group
+    runs-on: medium-runner-scale-set-group
 
     steps:
     - uses: actions/checkout@v4
