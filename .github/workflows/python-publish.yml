@@ -19,7 +19,7 @@ permissions:
 jobs:
   deploy:
 
-    runs-on: medium-runner-scale-set-group
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
