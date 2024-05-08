@@ -80,7 +80,6 @@ def get_config_terraform_sources(
     if isinstance(configured, (str, Path)):
         configured = {Path(configured).name: configured}
 
-    log.error("sphinx-terraform {}".format(configured))
     for name in configured:
         path = Path(configured[name])
         log.error("sphinx-terraform parsing : {}".format(path))
@@ -88,8 +87,6 @@ def get_config_terraform_sources(
             path = Path(env.project.srcdir, path)
         configured[name] = path
 
-    log.error(configured)
-    raise ValueError("Is this executing")
     return configured
 
 
