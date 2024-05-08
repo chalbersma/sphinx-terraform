@@ -80,9 +80,10 @@ def get_config_terraform_sources(
     if isinstance(configured, (str, Path)):
         configured = {Path(configured).name: configured}
 
+    log.warning("sphinx-terraform {}".format(configured))
     for name in configured:
         path = Path(configured[name])
-        print("sphinx-terraform parsing : {}".format(path))
+        log.warning("sphinx-terraform parsing : {}".format(path))
         if not path.is_absolute():
             path = Path(env.project.srcdir, path)
         configured[name] = path
