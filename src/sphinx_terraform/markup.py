@@ -278,7 +278,7 @@ class TerraformObjectDirective(ObjectDescription[str]):
         self.indexnode.append(inode)
 
     def transform_content(self, contentnode: addnodes.desc_content) -> None:
-        hcl_def = self._hcl_def
+        hcl_def = self.hcl_def
 
         code = self._domain.store.get_documentation(hcl_def)
 
