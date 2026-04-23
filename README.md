@@ -1,7 +1,3 @@
-################
-Sphinx-Terraform
-################
+# Sphinx Terraform
 
-.. warning:: fork
-    This is a fork of the original version.
-
+I've forked this to try to get a working version. It's probably wrong. I apologize in advance.
