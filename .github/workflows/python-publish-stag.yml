@@ -29,7 +29,6 @@ jobs:
     - name: Setup Environment
       uses: astral-sh/setup-uv@v8.1.0
       with:
-        version-file: '.python-version'
         activate-environment: 'true'
     - name: Build package
       run: uv build
