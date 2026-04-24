@@ -35,7 +35,8 @@ class TFModule:
 
     def get_markdown(self):
 
-        markdown = ["", "#"*self.level+ f" {self.name}", ""]
+        markdown = ["", "#"*self.level+ f" Module: {self.name}", "",
+                    f"```{{tf:project}} {self.name}","```"]
 
         self.logger.debug(f"Generating Markdown for {self.name}")
 

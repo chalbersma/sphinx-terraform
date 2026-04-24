@@ -7,8 +7,39 @@ from sphinx import addnodes
 from sphinx.directives import ObjectDescription
 from sphinx.domains import Domain, ObjType
 from sphinx.roles import XRefRole
+from sphinx.util.docutils import SphinxDirective
 from sphinx.util.nodes import make_refnode
 from sphinx.util.docfields import TypedField, GroupedField, Field
+
+
+class TerraformXRefRole(XRefRole):
+    """XRefRole that captures the current tf:project context into the ref node."""
+
+    def process_link(self, env, refnode, has_explicit_title, title, target):
+        refnode['tf:project'] = env.ref_context.get('tf:project', '')
+        return title, target
+
+
+class TerraformCurrentProject(SphinxDirective):
+    """
+    Sets (or clears) the current project namespace for subsequent tf: directives.
+    Usage:
+      .. tf:project:: projectA
+      .. tf:project:: None   <- clears the current project
+    """
+    has_content = False
+    required_arguments = 1
+    optional_arguments = 0
+    final_argument_whitespace = False
+    option_spec = {}
+
+    def run(self):
+        project = self.arguments[0].strip()
+        if project == 'None':
+            self.env.ref_context.pop('tf:project', None)
+        else:
+            self.env.ref_context['tf:project'] = project
+        return []
 
 
 class TerraformObject(ObjectDescription):
@@ -62,8 +93,11 @@ class TerraformObject(ObjectDescription):
             return obj_type
 
     def add_target_and_index(self, name: str, sig: str, signode: addnodes.desc_signature):
+        project = self.env.ref_context.get('tf:project')
+        fullname = f"{project}.{name}" if project else name
+
         # Create a unique internal ID to prevent collisions between a var and resource of same name
-        target_id = f"tf.{self.objtype}.{name}"
+        target_id = f"tf.{self.objtype}.{fullname}"
 
         if target_id not in self.state.document.ids:
             signode['names'].append(target_id)
@@ -72,11 +106,11 @@ class TerraformObject(ObjectDescription):
 
         # Store in domain data for cross-referencing
         domain = self.env.get_domain('tf')
-        domain.add_object(self.objtype, name, target_id)
+        domain.add_object(self.objtype, fullname, target_id)
 
         # Add to the general index
         self.indexnode['entries'].append(
-            ('single', f'{name} (Terraform {self.objtype})', target_id, '', None)
+            ('single', f'{fullname} (Terraform {self.objtype})', target_id, '', None)
         )
 
 
@@ -100,19 +134,19 @@ class TerraformDomain(Domain):
         'block': ObjType('block', 'block'),
     }
 
-    directives = {t: TerraformObject for t in object_types}
+    directives = {t: TerraformObject for t in object_types} | {'project': TerraformCurrentProject}
     roles = {
-        'res': XRefRole(),
-        'var': XRefRole(),
-        'local': XRefRole(),
-        'data': XRefRole(),
-        'tf': XRefRole(),
-        'mod': XRefRole(),
-        'prov': XRefRole(),
-        'check': XRefRole(),
-        'import': XRefRole(),
-        'removed': XRefRole(),
-        'block': XRefRole(),
+        'res': TerraformXRefRole(),
+        'var': TerraformXRefRole(),
+        'local': TerraformXRefRole(),
+        'data': TerraformXRefRole(),
+        'tf': TerraformXRefRole(),
+        'mod': TerraformXRefRole(),
+        'prov': TerraformXRefRole(),
+        'check': TerraformXRefRole(),
+        'import': TerraformXRefRole(),
+        'removed': TerraformXRefRole(),
+        'block': TerraformXRefRole(),
     }
 
     initial_data = {
@@ -129,7 +163,17 @@ class TerraformDomain(Domain):
         objtypes = [obj for obj, info in self.object_types.items() if typ in info.roles]
 
         for objtype in objtypes:
+            # Direct lookup (handles fully-qualified 'projectA.aws_s3_bucket.main')
             if (objtype, target) in self.data['objects']:
                 docname, target_id = self.data['objects'][objtype, target]
                 return make_refnode(builder, fromdocname, docname, target_id, contnode, target)
+
+            # Fallback: prepend the project captured at role-parse time
+            current_project = node.get('tf:project', '')
+            if current_project:
+                prefixed = f"{current_project}.{target}"
+                if (objtype, prefixed) in self.data['objects']:
+                    docname, target_id = self.data['objects'][objtype, prefixed]
+                    return make_refnode(builder, fromdocname, docname, target_id, contnode, target)
+
         return None

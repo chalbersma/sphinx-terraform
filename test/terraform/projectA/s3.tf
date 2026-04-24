@@ -14,6 +14,8 @@ resource "aws_s3_bucket_versioning" "main" {
   }
 }
 
+# :param bucket: The name of the {tf:res}`main S3 bucket <projectA.aws_s3_bucket.main>`.
+# :type bucket: str
 resource "aws_s3_bucket_server_side_encryption_configuration" "main" {
   bucket = aws_s3_bucket.main.id
 
