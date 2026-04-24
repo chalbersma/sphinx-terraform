@@ -1,47 +1,12 @@
-/**
- * Documentation for terraform/main.tf
- *
- * * list item 1
- * * list item 2
- *
- * Even inline **formatting** in *here* is possible.
- * and some link_  `inline link <https://example.com/>`__
- *
- * .. _link: https://example.com
- *
- * *  list item 3
- * *  list item 4
- *
- * Enumerated lists:
- *
- * 3.  This is the first item
- * 4.  This is the second item
- * 5.  Enumerators are arabic numbers,
- *     single letters, or roman numerals
- * 6.  List items should be sequentially
- *     numbered, but need not start at 1
- *     (although not all formatters will
- *     honour the first index).
- * #.  This item is auto-enumerated
- *
- * .. code-block:: tf
- *
- *     module "foo_bar" {
- *       source = "github.com/foo/bar"
- *
- *       id   = "1234567890"
- *       name = "baz"
- *
- *       zones = ["us", "elsewhere"]
- *
- *       tags = {
- *         Name         = "baz"
- *         Created-By   = "first.last@email.com"
- *         Date-Created = "20180101"
- *       }
- *     }
- */
-
+// Documentation for terraform/main.tf
+//
+// * list item 1
+// * list item 2
+//
+// Even inline **formatting** in *here* is possible.
+// and some link  [inline link ](https://example.com/),
+// [internal_link](#tf.variable.submodule-input)
+//
 terraform {
   required_version = ">= 0.12"
   required_providers {
@@ -77,14 +42,8 @@ resource "foo_resource" "baz" {
 
   Use it like so:
 
-  ```rst
-  .. tf:resource:: foo_resource.markdown
-      :markup: md
-  ```
-
   Also, an [hyperlink](https://cblegare.gitlab.io/sphinx-terraform).
 
-  See {ref}`markdown` for details.
  */
 resource "foo_resource" "markdown" {
 }

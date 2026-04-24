@@ -1,6 +1,6 @@
 [project]
 name = "sphinx-terraform-ch"
-version = "2026.04.23.1"
+version = "2026.04.24.0"
 description = "A fork of the sphinx-terraform extension."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -10,15 +10,21 @@ dependencies = [
     "docutils>=0.22.4",
     "importlib-metadata",
     "sphinx>=8.0.0",
+    "myst-parser[linkify]>=5.0.0",
+    "pygohcl>=1.2.7",
+    "sphinx-argparse>=0.5.2",
 ]
+
+[project.scripts]
+tfreport = "tfreport:main"
 
 [build-system]
 requires = ["uv_build"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name="sphinx_terraform"
-module-root="."
+module-name="sphinx_terraform_ch"
+module-root="src"
 
 [dependency-groups]
 dev = [

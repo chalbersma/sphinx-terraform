@@ -1,0 +1,1 @@
+This is a directory to simulate a docs or other directory that should be ignored by tfmodule.
