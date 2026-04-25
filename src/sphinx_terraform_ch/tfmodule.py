@@ -24,12 +24,13 @@ class TFModule:
         "removed": {"labels": 0},
     }
 
-    def __init__(self, path, name=None, level=3):
+    def __init__(self, path, name=None, level=3, hide_nocomment=False):
         self.logger = logging.getLogger("TFModule")
 
         self.path = path
         self.name = name or os.path.basename(path)
         self.level = level
+        self.hide_nocomment = hide_nocomment
 
         self.module_blocks = [block for block in self.iterate_all_tf_files()]
 
@@ -41,7 +42,8 @@ class TFModule:
         self.logger.debug(f"Generating Markdown for {self.name}")
 
         for block in self.module_blocks:
-
+            if self.hide_nocomment and not block.preceding_comments:
+                continue
             markdown.extend(block.generate_markdown())
 
         return markdown

@@ -19,6 +19,7 @@ class TFParse(Directive):
         "path": directives.path,
         "submodules_depth": directives.nonnegative_int,
         "ignore": directives.unchanged,
+        "hide_nocomment": directives.flag,
     }
 
     def _dirs_at_depth(self):
@@ -53,9 +54,12 @@ class TFParse(Directive):
 
         module_paths = list(self._dirs_at_depth()) if path is not None else []
 
+        hide_nocomment = "hide_nocomment" in self.options
+
         for this_modules_path in module_paths:
             this_module = TFModule(name=this_modules_path["relative"],
-                                   path=this_modules_path["full"])
+                                   path=this_modules_path["full"],
+                                   hide_nocomment=hide_nocomment)
             md_text.extend(this_module.get_markdown())
 
         transient_doc = new_document("<tfmodule>", self.state.document.settings)
