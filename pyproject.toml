@@ -1,6 +1,6 @@
 [project]
 name = "sphinx-terraform-ch"
-version = "2026.04.27.0"
+version = "2026.04.27.1"
 description = "A fork of the sphinx-terraform extension."
 readme = "README.md"
 requires-python = ">=3.11"

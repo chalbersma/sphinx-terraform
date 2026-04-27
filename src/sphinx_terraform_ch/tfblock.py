@@ -18,7 +18,7 @@ class TFBlock:
         self.labels = labels
         self.data = data
 
-        self.logger.info(f"Parsing Module {self.module} {self.file} {self.block_type} {" ".join(self.labels)}")
+        self.logger.debug(f"Parsing Module {self.module} {self.file} {self.block_type} {" ".join(self.labels)}")
         self.logger.debug(f"{self.line_number}")
         self.logger.debug(f"{self.preceding_comments}")
         self.logger.debug(f"{self.source_code}")
@@ -153,7 +153,7 @@ class TFBlock:
         else:
             label_text = f"{self.module}:{self.block_type}"
 
-        self.logger.info(f"Generate Markdown for {self.module}'s {self.block_type} {label_text}")
+        self.logger.debug(f"Generate Markdown for {self.module}'s {self.block_type} {label_text}")
 
         snippet = ["", f"```{{tf:{self.block_type}}} {label_text}",
                    "",
