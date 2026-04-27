@@ -31,12 +31,13 @@ class TFParse(Directive):
         depth = self.options.get("submodules_depth", 0)
         ignore = json.loads(self.options.get("ignore", "[]"))
 
+        self.logger.warning(f"Debugging Ignore Entries for {root}, {ignore}")
+
         def _recurse(current, remaining):
             if remaining == 0:
                 yield {"relative": os.path.relpath(current, root), "full": current}
                 return
             for entry in sorted(os.scandir(current), key=lambda e: e.name):
-                self.logger.warning(f"Debugging Entry {entry.name}, {ignore}")
                 entry_pass = True
                 for pattern in ignore:
                     if re.search(pattern, entry.name):
