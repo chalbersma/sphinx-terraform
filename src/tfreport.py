@@ -8,10 +8,11 @@ import logging
 from sphinx_terraform_ch.tfmodule import TFModule
 
 
-def get_parser():
+def get_parser(color=False):
     parser = argparse.ArgumentParser(
         prog="tfreport",
         description="Generate a Terraform documentation report for a module path.",
+        color=color
     )
     parser.add_argument(
         "path",
@@ -31,7 +32,7 @@ def get_parser():
 
 
 def main():
-    parser = get_parser()
+    parser = get_parser(color=True)
     args = parser.parse_args()
 
     VERBOSE = len(args.verbose)
@@ -68,7 +69,6 @@ def main():
     module = TFModule(path=path, name=name, level=args.level)
 
     print("\n".join(module.get_markdown()))
-
 
 if __name__ == "__main__":
     sys.exit(main())

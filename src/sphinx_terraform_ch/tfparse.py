@@ -36,7 +36,14 @@ class TFParse(Directive):
                 yield {"relative": os.path.relpath(current, root), "full": current}
                 return
             for entry in sorted(os.scandir(current), key=lambda e: e.name):
-                if entry.is_dir() and not any(re.search(pattern, entry.name) for pattern in ignore):
+                self.logger.warning(f"Debugging Entry {entry.name}, {ignore}")
+                entry_pass = True
+                for pattern in ignore:
+                    if re.search(pattern, entry.name):
+                        entry_pass = False
+                        self.logger.info(f"Ignoring {entry.name} because it matches {pattern}")
+                        break
+                if entry.is_dir() and entry_pass:
                     yield from _recurse(entry.path, remaining - 1)
 
         yield from _recurse(root, depth)
