@@ -8,10 +8,19 @@
 :ignore: ["docs"]
 ```
 
-## Cli Tool
+## CLI Tools 
+
+### TFReport
 
 ```{argparse}
-:filename: ../src/tfreport.py
+:filename: ../src/sphinx_terraform_ch/tfreport.py
 :func: get_parser
-:prog: tfreport.py
+:prog: tfreport
+```
+### TFMap
+
+```{argparse}
+:filename: ../src/sphinx_terraform_ch/tfmapexpand.py
+:func: get_parser
+:prog: tfmapexpand
 ```
