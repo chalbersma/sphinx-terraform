@@ -13,7 +13,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["category", "path", "submodules_depth"],
+        "required": ["path", "submodules_depth"],
         "additionalProperties": false,
         "properties": {
           "category": {
