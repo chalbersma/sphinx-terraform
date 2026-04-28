@@ -1,0 +1,13 @@
+---
+maps:
+  - category: One
+    path: example_map
+    submodules_depth: 1
+    ignore:
+      - subgroup
+  - category: One
+    path: example_map/subgroup
+    submodules_depth: 1
+  - category: Two
+    path: example_map2
+    submodules_depth: 1

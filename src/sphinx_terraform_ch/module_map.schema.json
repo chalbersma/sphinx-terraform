@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "module_map.schema.json",
+  "title": "Module Map",
+  "description": "Schema for module_map.yaml, defining Terraform module category mappings.",
+  "type": "object",
+  "required": ["maps"],
+  "additionalProperties": false,
+  "properties": {
+    "maps": {
+      "type": "array",
+      "description": "List of module map entries.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["category", "path", "submodules_depth"],
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "type": "string",
+            "description": "The category label for this group of modules (e.g. 'AWS General', 'GCP')."
+          },
+          "path": {
+            "type": "string",
+            "description": "Relative filesystem path to the module directory."
+          },
+          "submodules_depth": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "How many levels deep to traverse for submodules."
+          },
+          "ignore": {
+            "type": "array",
+            "description": "List of directory name patterns to ignore when scanning for modules.",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -177,3 +177,14 @@ class TerraformDomain(Domain):
                     return make_refnode(builder, fromdocname, docname, target_id, contnode, target)
 
         return None
+
+    def resolve_any_xref(self, env, fromdocname, builder, target, node, contnode):
+        results = []
+        for (objtype, name), (docname, target_id) in self.data['objects'].items():
+            if name == target or target_id == target:
+                obj_info = self.object_types.get(objtype)
+                if obj_info and obj_info.roles:
+                    role = obj_info.roles[0]
+                    refnode = make_refnode(builder, fromdocname, docname, target_id, contnode, target)
+                    results.append((f'tf:{role}', refnode))
+        return results

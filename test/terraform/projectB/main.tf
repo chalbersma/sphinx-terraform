@@ -5,7 +5,7 @@
 //
 // Even inline **formatting** in *here* is possible.
 // and some link  [inline link ](https://example.com/),
-// [internal_link](#tf.variable.submodule-input)
+// {tf:mod}`Internal Link <projectB.foobar>`.
 //
 terraform {
   required_version = ">= 0.12"

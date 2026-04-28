@@ -16,4 +16,5 @@ documentation for details.
    :caption: Contents:
 
    demo/index.md
+   demo/map_doc.md
 
