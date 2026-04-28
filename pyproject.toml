@@ -1,6 +1,6 @@
 [project]
 name = "sphinx-terraform-ch"
-version = "2026.04.28.2"
+version = "2026.04.28.3"
 description = "A fork of the sphinx-terraform extension."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -18,8 +18,8 @@ dependencies = [
 ]
 
 [project.scripts]
-tfreport = "tfreport:main"
-tfmapexpand = "tfmapexpand:main"
+tfreport = "sphinx_terraform_ch.tfreport:main"
+tfmapexpand = "sphinx_terraform_ch.tfmapexpand:main"
 
 [build-system]
 requires = ["uv_build"]
