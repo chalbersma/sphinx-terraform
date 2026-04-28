@@ -6,6 +6,8 @@ from .tfparse import TFParse
 
 from .tfdomain import TerraformDomain
 
+from .fnmap_gen import FnMapGen, fn_recurse_dirs
+
 from sphinx.application import Sphinx
 
 def setup(app: Sphinx):

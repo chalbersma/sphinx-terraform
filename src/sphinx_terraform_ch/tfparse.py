@@ -14,7 +14,7 @@ from docutils.parsers.rst import Directive, directives
 from myst_parser.parsers.sphinx_ import MystParser
 
 from .tfmodule import TFModule
-
+from .fnmap_gen import FnMapGen, fn_recurse_dirs
 
 class TFParse(Directive):
     logger = logging.getLogger("TFParse")
@@ -26,31 +26,6 @@ class TFParse(Directive):
         "ignore": directives.unchanged,
         "hide_nocomment": directives.flag,
     }
-
-    @staticmethod
-    def _recurse_dirs(root, depth, ignore, logger):
-        """Return a list of dicts with 'relative' and 'full' keys for directories exactly
-        `depth` levels below `root`, skipping any whose name matches a pattern in `ignore`.
-        Relative paths are computed relative to `root`.
-        """
-        results = []
-
-        def _recurse(current, remaining):
-            if remaining == 0:
-                results.append({"relative": os.path.relpath(current, root), "full": current})
-                return
-            for entry in sorted(os.scandir(current), key=lambda e: e.name):
-                entry_pass = True
-                for pattern in ignore:
-                    if re.search(pattern, entry.name):
-                        entry_pass = False
-                        logger.info(f"Ignoring {entry.name} because it matches {pattern}")
-                        break
-                if entry.is_dir() and entry_pass:
-                    _recurse(entry.path, remaining - 1)
-
-        _recurse(root, depth)
-        return results
 
     def yield_module_dirs(self):
         """Return a list of module dir dicts from the :path: directive option."""
@@ -64,27 +39,7 @@ class TFParse(Directive):
         results = []
         for p in paths:
             self.logger.info(f"Debugging Ignore Entries for {p['root']}, {p['ignore']}")
-            results.extend(self._recurse_dirs(p["root"], p["depth"], p["ignore"], self.logger))
-        return results
-
-    def yield_map_paths(self, file, file_data):
-        """Return a list of module dir dicts by parsing a validated module map file.
-        Paths in the map are resolved relative to the map file's directory.
-        Relative keys in results are relative to each entry's resolved root.
-        """
-        map_dir = os.path.dirname(file)
-        paths = []
-        for entry in file_data["maps"]:
-            root = os.path.realpath(os.path.join(map_dir, entry["path"]))
-            paths.append({
-                "root": root,
-                "depth": entry["submodules_depth"],
-                "ignore": entry.get("ignore", []),
-            })
-        results = []
-        for p in paths:
-            self.logger.info(f"Debugging Ignore Entries for {p['root']}, {p['ignore']}")
-            results.extend(self._recurse_dirs(p["root"], p["depth"], p["ignore"], self.logger))
+            results.extend(fn_recurse_dirs(p["root"], p["depth"], p["ignore"]))
         return results
 
     def run(self):
@@ -120,7 +75,11 @@ class TFParse(Directive):
             except jsonschema.ValidationError as exc:
                 raise self.error(f":file: {file!r} failed schema validation: {exc.message}")
 
-            module_paths = self.yield_map_paths(file, file_data)
+            paths = FnMapGen(file, file_data).paths
+
+            module_paths = []
+            for p in paths:
+                module_paths.extend(fn_recurse_dirs(p["root"], p["depth"], p["ignore"]))
 
         elif path is not None:
             module_paths = self.yield_module_dirs()
