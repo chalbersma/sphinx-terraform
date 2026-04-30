@@ -931,7 +931,7 @@ wheels = [
 
 [[package]]
 name = "sphinx-terraform-ch"
-version = "2026.4.27.2"
+version = "2026.4.29.0"
 source = { editable = "." }
 dependencies = [
     { name = "docutils" },

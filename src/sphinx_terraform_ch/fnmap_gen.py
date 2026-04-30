@@ -70,16 +70,17 @@ class FnMapGen():
         paths = []
         for entry in self.file_data["maps"]:
 
-            if self.ignore_cat and re.search(self.ignore_cat, str(self.file_data.get("category", ""))) is not None:
+            if self.ignore_cat is not None and re.search(self.ignore_cat, str(self.file_data.get("category", ""))) is not None:
                 self.logger.info(f"Ignoring {entry['path']} because it matches {self.ignore_cat}")
                 continue
+            else:
 
-            root = os.path.realpath(os.path.join(map_dir, entry["path"]))
-            paths.append({
-                "root": root,
-                "depth": entry["submodules_depth"],
-                "ignore": entry.get("ignore", []),
-            })
+                root = os.path.realpath(os.path.join(map_dir, entry["path"]))
+                paths.append({
+                    "root": root,
+                    "depth": entry["submodules_depth"],
+                    "ignore": entry.get("ignore", []),
+                })
 
         return paths
 
