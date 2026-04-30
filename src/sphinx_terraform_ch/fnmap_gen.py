@@ -47,11 +47,14 @@ class FnMapGen():
     TODO: Bring schema Validation into this class
     '''
 
-    def __init__(self, file=None, file_data=None, action=True):
+    def __init__(self, file=None, file_data=None, action=True,
+                 ignore_cat=None):
         self.logger = logging.getLogger(__name__)
 
         self.file = file
         self.file_data = file_data
+
+        self.ignore_cat = ignore_cat
 
         self.results = None
 
@@ -66,6 +69,11 @@ class FnMapGen():
         map_dir = os.path.dirname(self.file)
         paths = []
         for entry in self.file_data["maps"]:
+
+            if self.ignore_cat and re.search(self.ignore_cat, str(self.file_data.get("category", ""))) is not None:
+                self.logger.info(f"Ignoring {entry['path']} because it matches {self.ignore_cat}")
+                continue
+
             root = os.path.realpath(os.path.join(map_dir, entry["path"]))
             paths.append({
                 "root": root,
