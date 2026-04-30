@@ -70,7 +70,7 @@ class FnMapGen():
         paths = []
         for entry in self.file_data["maps"]:
 
-            if self.ignore_cat is not None and re.search(self.ignore_cat, str(self.file_data.get("category", ""))) is not None:
+            if self.ignore_cat is not None and re.search(self.ignore_cat, str(entry.get("category", ""))) is not None:
                 self.logger.info(f"Ignoring {entry['path']} because it matches {self.ignore_cat}")
                 continue
             else:
