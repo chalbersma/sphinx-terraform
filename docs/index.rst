@@ -18,3 +18,8 @@ documentation for details.
    demo/index.md
    demo/map_doc.md
 
+
+.. include:: ../README.md
+   :parser: myst_parser.sphinx_
+
+

@@ -213,6 +213,6 @@ locals {
 
 ## License
 
-BSD-2-Clause-Patent. See [LICENSE](LICENSE) for details.
+BSD-2-Clause-Patent. See LICENSE file at root of the directory.
 
 Original work copyright (c) 2022 Charles Bouchard-Légaré.
